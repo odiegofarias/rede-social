@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+    <div class="column">
+        {% for followed in user.profile.seguidores.all %}
+            {% for mensagem in followed.usuario.mensagens.all %}
+            <div class="box">
+                {{ mensagem.body }}
+                <span class="is-small has-text-grey-light">
+                    ({{ mensagem.created_at }}) by <a href="{% url 'message:profile' followed.id %}">{{ mensagem.user.username }}</a>
+                </span>
+            </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+
+{% endblock %}

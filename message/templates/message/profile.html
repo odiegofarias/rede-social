@@ -5,23 +5,34 @@
 <div class="column">
 
     <div class="block">
-    <h1 class="title is-1">
-        {{profile.usuario.username|upper}}'s Dweets
-    </h1>
+        <h1 class="title is-1">
+            {{profile.usuario.username|upper}}'s Dweets
+        </h1>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="buttons has-addons">
+                {% if profile in user.profile.seguidores.all %}
+                    <button class="button is-success is-static">Follow</button>
+                    <button class="button is-danger" name="follow" value="unfollow">Unfollow</button>
+                {% else %}
+                    <button class="button is-success" name="follow" value="follow">Follow</button>
+                    <button class="button is-danger is-static">Unfollow</button>
+                {% endif %}
+            </div>
+        </form>
     </div>
-    <form method="POST">
-        {% csrf_token %}
-        <div class="buttons has-addons">
-            {% if profile in user.profile.seguidores.all %}
-                <button class="button is-success is-static">Follow</button>
-                <button class="button is-danger" name="follow" value="unfollow">Unfollow</button>
-            {% else %}
-                <button class="button is-success" name="follow" value="follow">Follow</button>
-                <button class="button is-danger is-static">Unfollow</button>
-            {% endif %}
-        </div>
-    </form>
+    <div class="content">
+        {% for mensagem in profile.usuario.mensagens.all %}
+            <div class="box">
+                {{ mensagem.body }}
+            </div>
+            <span class="is-small has-text-grey-light">
+                ({{ mensagem.created_at }})
+            </span>
+        {% endfor %}
+    </div>
 </div>
+
 
 <div class="column is-one-third">
 

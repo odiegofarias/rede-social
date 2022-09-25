@@ -38,4 +38,12 @@ class Mensagem(models.Model):
     body = models. CharField(max_length=140)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        verbose_name_plural = "mensagens"
 
+    def __str__(self) -> str:
+        return (
+            f"{self.user} "
+            f"({self.created_at:%d/%m/%Y %H:%M}): "
+            f"{self.body[:30]}..."
+        )

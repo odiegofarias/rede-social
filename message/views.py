@@ -3,7 +3,7 @@ from .models import Profile
 
 
 def dashboard(request):
-    return render(request, "base.html")
+    return render(request, "message/dashboard.html")
 
 def profile_list(request):
     profiles = Profile.objects.exclude(usuario=request.user)
