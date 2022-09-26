@@ -35,7 +35,7 @@ class Mensagem(models.Model):
         related_name="mensagens",
         on_delete=models.DO_NOTHING,
     )
-    body = models. CharField(max_length=140)
+    body = models.CharField(max_length=140)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

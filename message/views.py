@@ -1,9 +1,30 @@
-from django.shortcuts import render
-from .models import Profile
+from django.shortcuts import render, redirect
+from .models import Profile, Mensagem
+from .forms import MessageForm
 
 
 def dashboard(request):
-    return render(request, "message/dashboard.html")
+    # preenche o form com os dados que chegaram do request.POST
+    form = MessageForm(request.POST or None)
+    if request.method == "POST":
+        if form.is_valid():
+            mensagem = form.save(commit=False)
+            mensagem.user = request.user
+            mensagem.save()
+
+            return redirect("message:dashboard")
+
+    followed_messages = Mensagem.objects.filter(
+        user__profile__in=request.user.profile.seguidores.all()
+    ).order_by('-created_at')
+    return render(
+        request,
+        "message/dashboard.html",
+        {
+            "form": form,
+            "mensagens": followed_messages,
+        }
+    )
 
 def profile_list(request):
     profiles = Profile.objects.exclude(usuario=request.user)

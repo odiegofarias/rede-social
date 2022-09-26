@@ -2,16 +2,47 @@
 
 {% block conteudo %}
     <div class="column">
-        {% for followed in user.profile.seguidores.all %}
-            {% for mensagem in followed.usuario.mensagens.all %}
+        {% for menssagem in mensagens %}
             <div class="box">
-                {{ mensagem.body }}
+                {{ menssagem.body }}
                 <span class="is-small has-text-grey-light">
-                    ({{ mensagem.created_at }}) by <a href="{% url 'message:profile' followed.id %}">{{ mensagem.user.username }}</a>
+                    ({{ menssagem.created_at }}) por {{ menssagem.user.username }}
                 </span>
             </div>
-            {% endfor %}
         {% endfor %}
+    </div>
+    
+    <div class="column is-one-third">
+    
+        <div class="block">
+            <a href="{% url 'message:profile_list' %}">
+                <button class="button is-dark is-outlined is-fullwidth">
+                    Todos os perfis
+                </button>
+            </a>
+        </div>
+        <div class="block">
+            <a href="{% url 'message:profile' user.profile.id %}">
+                <button class="button is-success is-light is-outlined is-fullwidth">
+                    Meu perfil
+                </button>
+            </a>
+        </div>
+        
+        <div class="block">
+            <div class="block">
+                <p class="title is-2">Publicar pensamento</p>
+            </div>
+            <div class="block">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button class="button is-success is-fullwidth is-medium mt-5" type="submit">
+                        Publicar
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
 
 {% endblock %}
